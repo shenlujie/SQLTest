@@ -61,6 +61,16 @@ SId 学生编号		CId 课程编号		score 分数
 
 1、查询“01”课程比“02”课程成绩高的所有学生的学号：
 
+```sql
+SELECT
+	s1.sid 
+FROM
+	( SELECT * FROM SC WHERE cid = 01 ) s1
+	LEFT JOIN ( SELECT * FROM SC WHERE cid = 02 ) s2 ON s1.sid = s2.sid 
+WHERE
+	s1.score > s2.score;
+```
+
 2、查询平均成绩大于60分的同学的学号和平均成绩；
 
 3、查询所有同学的学号、姓名、选课数、总成绩
