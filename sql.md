@@ -73,6 +73,14 @@ WHERE
 
 2、查询平均成绩大于60分的同学的学号和平均成绩；
 
+```sql
+SELECT
+	sid,AVG( score ) 
+FROM SC 
+GROUP BY sid 
+HAVING AVG( score ) > 60;
+```
+
 3、查询所有同学的学号、姓名、选课数、总成绩
 
 4、查询姓“李”的老师的个数；
