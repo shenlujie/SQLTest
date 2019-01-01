@@ -83,6 +83,13 @@ HAVING AVG( score ) > 60;
 
 3、查询所有同学的学号、姓名、选课数、总成绩
 
+```sql
+SELECT Student.sid,Student.sname,COUNT(DISTINCT cid),SUM(DISTINCT score)
+FROM Student LEFT JOIN SC
+ON Student.sid = SC.sid
+GROUP BY Student.sid,Student.sid
+```
+
 4、查询姓“李”的老师的个数；
 
 5、查询没学过“张三”老师课的同学的学号、姓名；
