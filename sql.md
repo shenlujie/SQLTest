@@ -62,8 +62,7 @@ SId 学生编号		CId 课程编号		score 分数
 1、查询“01”课程比“02”课程成绩高的所有学生的学号：
 
 ```sql
-SELECT
-	s1.sid 
+SELECT s1.sid 
 FROM
 	( SELECT * FROM SC WHERE cid = 01 ) s1
 	LEFT JOIN ( SELECT * FROM SC WHERE cid = 02 ) s2 ON s1.sid = s2.sid 
@@ -74,8 +73,7 @@ WHERE
 2、查询平均成绩大于60分的同学的学号和平均成绩；
 
 ```sql
-SELECT
-	sid,AVG( score ) 
+SELECT sid,AVG( score ) 
 FROM SC 
 GROUP BY sid 
 HAVING AVG( score ) > 60;
@@ -99,6 +97,16 @@ WHERE tname LIKE "李%"
 ```
 
 5、查询没学过“张三”老师课的同学的学号、姓名；
+
+```sql
+SELECT DISTINCT Student.sid,Student.sname 
+FROM Student LEFT JOIN SC 
+ON Student.sid = SC.sid
+WHERE SC.cid NOT IN
+	(SELECT cid 
+	FROM 	Course LEFT JOIN Teacher ON Course.tid = Teacher.tid 
+	WHERE tname = "张三")
+```
 
 6、查询学过编号“01”并且也学过编号“02”课程的同学的学号、姓名；
 
