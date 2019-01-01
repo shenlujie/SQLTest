@@ -92,6 +92,12 @@ GROUP BY Student.sid,Student.sid
 
 4、查询姓“李”的老师的个数；
 
+```sql
+SELECT COUNT(DISTINCT tid) AS teacher_cnt
+FROM Teacher
+WHERE tname LIKE "李%"
+```
+
 5、查询没学过“张三”老师课的同学的学号、姓名；
 
 6、查询学过编号“01”并且也学过编号“02”课程的同学的学号、姓名；
