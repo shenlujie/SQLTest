@@ -110,6 +110,19 @@ WHERE SC.cid NOT IN
 
 6、查询学过编号“01”并且也学过编号“02”课程的同学的学号、姓名；
 
+```sql
+SELECT t.sid AS sid,Student.sname
+FROM 
+	(SELECT sid 
+	FROM SC
+	GROUP BY sid
+	HAVING COUNT(IF(cid = "01",score,NULL)) > 0 
+	AND
+	COUNT(IF(cid = "02",score,NULL)) > 0) AS t
+LEFT JOIN Student
+ON t.sid = Student.sid;
+```
+
 7、查询学过“张三”老师所教的课的同学的学号、姓名；
 
 8、查询课程编号“01”的成绩比课程编号“02”课程低的所有同学的学号、姓名；
