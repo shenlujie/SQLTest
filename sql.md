@@ -125,6 +125,19 @@ ON t.sid = Student.sid;
 
 7、查询学过“张三”老师所教的课的同学的学号、姓名；
 
+```sql
+SELECT s.sid,Student.sname 
+FROM
+	(SELECT SC.sid
+	FROM
+		(SELECT DISTINCT cid
+		FROM Course LEFT JOIN Teacher
+		ON Course.tid = Teacher.tid
+		WHERE Teacher.tname = "张三") c
+		LEFT JOIN SC ON c.cid = SC.cid) s
+		LEFT JOIN Student ON s.sid = Student.sid
+```
+
 8、查询课程编号“01”的成绩比课程编号“02”课程低的所有同学的学号、姓名；
 
 9、查询所有课程成绩小于60分的同学的学号、姓名；
