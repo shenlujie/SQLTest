@@ -160,6 +160,17 @@ ON t.sid = Student.sid
 
 9、查询所有课程成绩小于60分的同学的学号、姓名；
 
+```sql
+SELECT t.sid,Student.sname
+FROM
+	(SELECT DISTINCT sid
+	FROM SC
+	GROUP BY sid
+	HAVING MAX(score) < 60) t
+LEFT JOIN Student
+ON t.sid = Student.sid
+```
+
 10、查询没有学全所有课的同学的学号、姓名；
 
 11、查询至少有一门课与学号为“01”的同学所学相同的同学的学号和姓名；
