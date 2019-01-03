@@ -173,6 +173,19 @@ ON t.sid = Student.sid
 
 10、查询没有学全所有课的同学的学号、姓名；
 
+```sql
+SELECT t.sid,Student.sname
+FROM
+	(SELECT sid
+	FROM SC
+	GROUP BY sid
+	HAVING COUNT(DISTINCT cid) < 
+	(SELECT COUNT(DISTINCT cid)
+	FROM Course)) t
+LEFT JOIN Student
+ON t.sid = Student.sid
+```
+
 11、查询至少有一门课与学号为“01”的同学所学相同的同学的学号和姓名；
 
 12、查询和"01"号的同学学习的课程完全相同的其他同学的学号和姓名
