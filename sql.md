@@ -140,6 +140,24 @@ FROM
 
 8、查询课程编号“01”的成绩比课程编号“02”课程低的所有同学的学号、姓名；
 
+```sql
+SELECT t.sid,Student.sname
+FROM
+	(SELECT s1.sid
+	FROM
+		(SELECT sid,score
+		FROM SC
+		WHERE cid = "01" AND score IS NOT NULL) s1
+		LEFT JOIN
+		(SELECT sid,score
+		FROM SC
+		WHERE cid = "02" AND score IS NOT NULL) s2
+		ON s1.sid = s2.sid
+	WHERE s1.score < s2.score) t
+LEFT JOIN Student
+ON t.sid = Student.sid
+```
+
 9、查询所有课程成绩小于60分的同学的学号、姓名；
 
 10、查询没有学全所有课的同学的学号、姓名；
