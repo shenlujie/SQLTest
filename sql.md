@@ -207,6 +207,28 @@ ON t.sid = Student.sid
 
 12、查询和"01"号的同学学习的课程完全相同的其他同学的学号和姓名
 
+```sql
+SELECT t.sid,Student.sname
+FROM
+	(SELECT co.sid
+		FROM
+			(SELECT cid
+			FROM SC 
+			WHERE sid = "01") c1
+		LEFT JOIN 
+			(SELECT sid,cid
+			FROM SC
+			WHERE sid != "01") co
+		ON c1.cid = co.cid 
+		GROUP BY co.sid
+		HAVING COUNT(co.cid) = 
+		(SELECT COUNT(DISTINCT cid)
+		FROM SC
+		WHERE sid = "01")) t
+LEFT JOIN Student
+ON t.sid = Student.sid
+```
+
 13、把“SC”表中“张三”老师教的课的成绩都更改为此课程的平均成绩；
 
 14、查询没学过"张三"老师讲授的任一门课程的学生姓名
