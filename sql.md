@@ -252,6 +252,17 @@ WHERE sid NOT IN
 
 15、查询两门及其以上不及格课程的同学的学号，姓名及其平均成绩
 
+```sql
+SELECT t.sid,Student.sname,t.avgScore
+FROM
+	(SELECT sid,AVG(score) avgScore
+	FROM SC
+	GROUP BY sid
+	HAVING COUNT(IF(score < 60,cid,NULL)) >= 2) t
+LEFT JOIN Student
+ON t.sid = Student.sid
+```
+
 16、检索"01"课程分数小于60，按分数降序排列的学生信息
 
 17、按平均成绩从高到低显示所有学生的平均成绩
