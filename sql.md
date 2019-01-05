@@ -231,7 +231,24 @@ ON t.sid = Student.sid
 
 13、把“SC”表中“张三”老师教的课的成绩都更改为此课程的平均成绩；
 
+```sql
+#暂跳过update题目
+```
+
 14、查询没学过"张三"老师讲授的任一门课程的学生姓名
+
+```sql
+SELECT sid,sname
+FROM Student
+WHERE sid NOT IN
+	(SELECT DISTINCT sid
+	FROM SC
+	LEFT JOIN Course
+	ON SC.cid = Course.cid
+	LEFT JOIN Teacher
+	ON Course.tid = Teacher.tid
+	WHERE Teacher.tname = "张三")
+```
 
 15、查询两门及其以上不及格课程的同学的学号，姓名及其平均成绩
 
