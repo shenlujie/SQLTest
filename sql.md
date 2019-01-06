@@ -287,6 +287,15 @@ ORDER BY AVG(score) DESC
 
 18、查询各科成绩最高分、最低分和平均分：以如下形式显示：课程ID，课程name，最高分，最低分，平均分，及格率
 
+```sql
+SELECT SC.cid, Course.cname ,MAX(score) maxScore,MIN(score) minScore,AVG(score) avgScore,
+COUNT(IF(score > 60,sid,NULL)) / COUNT(sid) passRate
+FROM SC
+LEFT JOIN Course
+ON SC.cid = Course.cid
+GROUP BY SC.cid
+```
+
 19、按各科平均成绩从低到高和及格率的百分数从高到低顺序
 
 20、查询学生的总成绩并进行排名
