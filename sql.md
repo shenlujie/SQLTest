@@ -265,6 +265,17 @@ ON t.sid = Student.sid
 
 16、检索"01"课程分数小于60，按分数降序排列的学生信息
 
+```sql
+SELECT Student.*
+FROM
+	(SELECT DISTINCT sid
+	FROM SC
+	WHERE cid = "01" AND score < 60 
+	ORDER BY score DESC) t
+LEFT JOIN Student
+ON t.sid = Student.sid
+```
+
 17、按平均成绩从高到低显示所有学生的平均成绩
 
 18、查询各科成绩最高分、最低分和平均分：以如下形式显示：课程ID，课程name，最高分，最低分，平均分，及格率
