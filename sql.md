@@ -278,6 +278,13 @@ ON t.sid = Student.sid
 
 17、按平均成绩从高到低显示所有学生的平均成绩
 
+```sql
+SELECT sid,AVG(score) 
+FROM SC
+GROUP BY sid
+ORDER BY AVG(score) DESC
+```
+
 18、查询各科成绩最高分、最低分和平均分：以如下形式显示：课程ID，课程name，最高分，最低分，平均分，及格率
 
 19、按各科平均成绩从低到高和及格率的百分数从高到低顺序
