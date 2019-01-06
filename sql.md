@@ -298,6 +298,17 @@ GROUP BY SC.cid
 
 19、按各科平均成绩从低到高和及格率的百分数从高到低顺序
 
+```sql
+SELECT SC.cid,AVG(score) avgScore,
+COUNT(IF(score > 60,sid,NULL)) / COUNT(sid) passRate
+FROM SC
+LEFT JOIN Course
+ON SC.cid = Course.cid
+GROUP BY SC.cid
+ORDER BY avgScore ASC,
+passRate DESC
+```
+
 20、查询学生的总成绩并进行排名
 
 21、查询不同老师所教不同课程平均分从高到低显示
