@@ -311,6 +311,13 @@ passRate DESC
 
 20、查询学生的总成绩并进行排名
 
+```sql
+SELECT sid,SUM(score) sumScore
+FROM SC
+GROUP BY sid
+ORDER BY sumScore DESC
+```
+
 21、查询不同老师所教不同课程平均分从高到低显示
 
 22、查询所有课程的成绩第2名到第3名的学生信息及该课程成绩
