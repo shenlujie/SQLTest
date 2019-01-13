@@ -320,6 +320,15 @@ ORDER BY sumScore DESC
 
 21、查询不同老师所教不同课程平均分从高到低显示
 
+```sql
+SELECT Course.tid,Course.cid,Course.cname,AVG(score) avgScore
+FROM SC
+LEFT JOIN Course
+ON SC.cid = Course.cid
+GROUP BY Course.tid,SC.cid
+ORDER BY avgScore DESC
+```
+
 22、查询所有课程的成绩第2名到第3名的学生信息及该课程成绩
 
 23、统计各科成绩各分数段人数：课程编号,课程名称,[100-85],[85-70],[70-60],[0-60]及所占百分比
