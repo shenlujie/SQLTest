@@ -331,6 +331,22 @@ ORDER BY avgScore DESC
 
 22、查询所有课程的成绩第2名到第3名的学生信息及该课程成绩
 
+```sql
+## oracle写法
+select
+ sid,rank_num,score,cid
+from
+ (
+ select
+ rank() over(partition by cid order by score desc) as rank_num
+ ,sid
+ ,score
+ ,cid
+ from sc
+ )t
+where rank_num in (2,3)
+```
+
 23、统计各科成绩各分数段人数：课程编号,课程名称,[100-85],[85-70],[70-60],[0-60]及所占百分比
 
 24、查询学生平均成绩及其名次
@@ -357,20 +373,115 @@ ORDER BY avgScore DESC
 
 40、查询选修“张三”老师所授课程的学生中，成绩最高的学生姓名及其成绩
 
+```sql
+select s.sname, sc.score
+from sc
+inner join course c
+on c.cid = sc.cid
+inner join teacher t
+on t.tid = c.tid
+and t.tname = '张三'
+left join student s
+on s.sid = sc.sid
+order by sc.score desc
+limit 1
+```
+
 42、查询每门功课成绩最好的前两名
+
+```sql
+## Oracle写法
+select
+ cid,sid,rank1
+from 
+ (
+ select
+ cid
+ ,sid
+ ,rank() over(partition by cid order by score desc) as rank1
+ from sc 
+ )t
+where rank1 <=2
+```
 
 43、统计每门课程的学生选修人数（超过5人的课程才统计）。要求输出课程号和选修人数，查询结果按人数降序排列，若人数相同，按课程号升序排列
 
+```sql
+select c.cid, c.cname, count(sc.cid)
+from sc
+left join course c
+on c.cid = sc.cid
+group by sc.cid
+having count(sc.cid) > 5
+order by count(sc.cid) desc, sc.cid asc
+```
+
 44、检索至少选修两门课程的学生学号
+
+```sql
+select s.*
+from student s
+inner join sc 
+on sc.sid = s.sid
+group by sc.sid
+having count(sc.cid) >= 2
+```
 
 45、查询选修了全部课程的学生信息
 
+```sql
+select s.*
+from student s
+inner join sc 
+on sc.sid = s.sid
+group by sc.sid
+having count(sc.cid) = (
+select count(distinct c.cid)
+from course c
+)
+```
+
 46、查询各学生的年龄
+
+```sql
+select
+ sid,sname,year(curdate())-year(sage) +  1 as sage
+from student
+```
 
 47、查询本周过生日的学生
 
+```sql
+select
+ s.sid,s.sname,s.sage
+from student s
+where weekofyear(s.sage) = weekofyear(curdate())
+```
+
 48、查询下周过生日的学生
+
+```sql
+select
+ s.sid,s.sname,s.sage
+from student s
+where weekofyear(s.sage) = weekofyear(date_add(curdate(),interval 1 week))
+```
 
 49、查询本月过生日的学生
 
+```sql
+select
+ s.sid,s.sname,s.sage
+from student s
+where month(s.sage) = month(curdate())
+```
+
 50、查询下月过生日的学生
+
+```sql
+select
+ s.sid,s.sname,s.sage
+from student s
+where month(date_sub(s.sage,interval 1 month)) = month(curdate())
+```
+
