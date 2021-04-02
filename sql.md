@@ -349,27 +349,149 @@ where rank_num in (2,3)
 
 23、统计各科成绩各分数段人数：课程编号,课程名称,[100-85],[85-70],[70-60],[0-60]及所占百分比
 
+```sql
+select
+ sc.cid
+ ,cname
+ ,count(if(score between 85 and 100,sid,null))/count(sid)
+ ,count(if(score between 70 and 85,sid,null))/count(sid)
+ ,count(if(score between 60 and 70,sid,null))/count(sid)
+ ,count(if(score between 0 and 60,sid,null))/count(sid)
+from sc
+left join course
+ on sc.cid=course.cid
+group by sc.cid,cname
+```
+
 24、查询学生平均成绩及其名次
+
+```sql
+## oracle写法
+select
+ sid
+ ,avg_score
+ ,rank() over (order by avg_score desc)
+from 
+ (
+ select
+ sid
+ ,avg(score) as avg_score
+ from sc
+ group by sid
+ )t
+```
 
 25、查询各科成绩前三名的记录
 
+```sql
+## oracle写法
+select
+ sid,cid,rank1
+from 
+ (
+ select
+ cid
+ ,sid
+ ,rank() over(partition by cid order by score desc) as rank1
+ from sc
+ )t
+where rank1<=3
+```
+
 26、查询每门课程被选修的学生数
+
+```sql
+select
+ count(sid)
+ ,cid
+from sc
+group by cid
+```
 
 27、查询出只选修了一门课程的全部学生的学号和姓名
 
+```sql
+select
+ s.*
+from sc
+left join student s
+on s.sid = sc.sid
+group by sid
+having count(cid) =1
+```
+
 28、查询男生、女生人数
+
+```sql
+select
+ ssex
+ ,count(distinct sid)
+from student
+group by ssex
+```
 
 29、查询名字中含有"风"字的学生信息
 
+```sql
+select
+ sid,sname
+from student
+where sname like '%风%'
+```
+
 30、查询同名同性学生名单，并统计同名人数
+
+```sql
+select
+ ssex
+ ,sname
+ ,count(sid)
+from student
+group by ssex,sname
+having count(sid)>=2
+```
 
 31、查询1990年出生的学生名单(注：Student表中Sage列的类型是datetime)
 
+```sql
+select *
+from student s
+where year(s.sage) = 1990
+```
+
 32、查询每门课程的平均成绩，结果按平均成绩升序排列，平均成绩相同时，按课程号降序排列
+
+```sql
+select sc.cid, avg(sc.score)
+from sc
+group by sc.cid
+order by avg(sc.score), cid desc
+```
 
 37、查询不及格的课程，并按课程号从大到小排列
 
+```sql
+select distinct c.cid, c.cname
+from sc
+left join course c
+on c.cid = sc.cid
+where sc.score < 60
+order by sc.cid desc
+```
+
 38、查询课程编号为"01"且课程成绩在60分以上的学生的学号和姓名；
+
+```sql
+select s.sid, s.sname
+from sc
+left join course c
+on c.cid = sc.cid
+left join student s
+on s.sid = sc.sid
+where 1=1
+and c.cid = '01'
+and sc.score > 60
+```
 
 40、查询选修“张三”老师所授课程的学生中，成绩最高的学生姓名及其成绩
 
