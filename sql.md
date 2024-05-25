@@ -99,13 +99,19 @@ WHERE tname LIKE "李%"
 5、查询没学过“张三”老师课的同学的学号、姓名；
 
 ```sql
-SELECT DISTINCT Student.sid,Student.sname 
-FROM Student LEFT JOIN SC 
-ON Student.sid = SC.sid
-WHERE SC.cid NOT IN
-	(SELECT cid 
-	FROM 	Course LEFT JOIN Teacher ON Course.tid = Teacher.tid 
-	WHERE tname = "张三")
+select s.sid, s.sname 
+from Student s 
+where s.sid not in (
+	SELECT s.sid
+	from Student s 
+	join SC sc
+	on sc.sid = s.sid 
+	join Course c 
+	on c.cid = sc.cid 
+	join Teacher t 
+	on t.tid = c.tid 
+	where t.tname = '张三'
+)
 ```
 
 6、查询学过编号“01”并且也学过编号“02”课程的同学的学号、姓名；
